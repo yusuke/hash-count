@@ -7,13 +7,10 @@
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>todoke.%d{yyyy-MM-dd}.log</FileNamePattern>
         </rollingPolicy>
-        <MinIndex>1</MinIndex>
-        <MaxIndex>10</MaxIndex>
         <triggeringPolicy
                 class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
-        <ImmediateFlush>true</ImmediateFlush>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{HH:mm:ss} [%thread] %-5level %logger %msg%n</pattern>
         </layout>
