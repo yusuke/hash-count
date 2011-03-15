@@ -27,6 +27,6 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----------------
 
 4. run
-$ mvn exec:java -Dexec.mainClass=org.todoke.countstream.Main #todoke,any,key,word,you,want,to,monitor
+$ mvn exec:java -Dexec.mainClass=org.todoke.countstream.Main -Dexec.args="#todoke,any,key,word,you,want,to,monitor"
 
 5. watch the result

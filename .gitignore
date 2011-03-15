@@ -5,6 +5,7 @@ target
 *.iws
 *.jpg
 .DS_Store
+todoke.log
 ~$*
 .classpath
 .project

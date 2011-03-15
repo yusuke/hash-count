@@ -30,7 +30,7 @@ public class Main {
     static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        if(args.length != 1){
+        if (args.length != 1) {
             System.out.println("usage: java org.todoke.hashcount.Main [comma separated terms to track]");
             System.exit(-1);
         }
@@ -39,11 +39,11 @@ public class Main {
         FilterQuery query = new FilterQuery().track(terms);
         TwitterStream stream = new TwitterStreamFactory().getInstance();
         StringBuffer path = new StringBuffer(args[0].length());
-        for(String term : terms){
-            if(0 != path.length()){
+        for (String term : terms) {
+            if (0 != path.length()) {
                 path.append("-");
             }
-            path.append(term);
+            path.append(term.replaceAll("#", ""));
         }
         Callback callback = new Callback(new File(path.toString()));
         Counter counter = new Counter(callback);
