@@ -37,7 +37,7 @@ public class Callback {
     static Logger logger = LoggerFactory.getLogger(Callback.class);
     private final String[] terms;
 
-    Callback(String[] terms) {
+    public Callback(String[] terms) {
         this.terms = terms;
         for(int i=0;i<terms.length;i++){
             terms[i] = terms[i].toLowerCase();
