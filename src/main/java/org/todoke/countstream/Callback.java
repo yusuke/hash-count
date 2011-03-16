@@ -35,34 +35,39 @@ import java.util.Date;
  */
 public class Callback {
     static Logger logger = LoggerFactory.getLogger(Callback.class);
-    private final String DIR;
+    private final String[] terms;
 
-    Callback(File directory) {
-        if (directory.isFile()) {
-            throw new AssertionError("");
+    Callback(String[] terms) {
+        this.terms = terms;
+        for(int i=0;i<terms.length;i++){
+            terms[i] = terms[i].toLowerCase();
         }
-        DIR = directory.getAbsolutePath();
     }
 
     public void increment(Status status) {
         logger.info("got: " + status.toString());
-        increment("@" + status.getUser().getScreenName() + " " + status.getText(), status.getCreatedAt());
+        increment(status.getText(), status.getCreatedAt());
     }
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH");
 
     public void increment(String text, Date date) {
         String dateStr = format.format(date);
-        String path = DIR + File.separator + dateStr + File.separatorChar;
-        File countPath = new File(path);
-        if (!countPath.exists()) {
-            countPath.mkdirs();
-        }
-        File countFile = new File(path + File.separator + "count.txt");
-        synchronized (this) {
-            int count = getCount(countFile);
-            count++;
-            storeCount(countFile, count);
+        String lowerCase = text.toLowerCase();
+        for (String term : terms) {
+            if (lowerCase.contains(term)) {
+                synchronized (term) {
+                    String path = term + File.separator + dateStr + File.separatorChar;
+                    File countPath = new File(path);
+                    if (!countPath.exists()) {
+                        countPath.mkdirs();
+                    }
+                    File countFile = new File(path + File.separator + "count.txt");
+                    int count = getCount(countFile);
+                    count++;
+                    storeCount(countFile, count);
+                }
+            }
         }
     }
 

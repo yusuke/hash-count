@@ -11,16 +11,17 @@
                 class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger %msg%n</pattern>
-        </layout>
+        <encoder>
+            <Pattern>%d{HH:mm:ss} [%thread] %-5level %logger %msg%n</Pattern>
+        </encoder>
     </appender>
 
     <appender name="STDOUT"
               class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger %msg%n</pattern>
-        </layout>
+        <encoder>
+            <Pattern>%d{HH:mm:ss} [%thread] %-5level %logger %msg%n</Pattern>
+        </encoder>
+
     </appender>
     <root level="INFO">
         <!--<appender-ref ref="STDOUT"/>-->

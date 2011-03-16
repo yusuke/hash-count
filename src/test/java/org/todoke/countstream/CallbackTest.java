@@ -27,26 +27,30 @@ public class CallbackTest extends TestCase {
     Callback callback;
     File testDir;
     File testCountFile;
+    String[] terms;
 
     public void setUp() throws Exception {
+        terms = new String[]{"#hokkairo", "#todoke"};
         testDir = new File("test");
         testDir.mkdirs();
         testCountFile = new File("test" + File.separator + "test.txt");
-        callback = new Callback(testDir);
+        callback = new Callback(terms);
     }
 
     public void tearDown() throws Exception {
-        File[] files = testDir.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                File[] files2 = file.listFiles();
-                for (File file2 : files2) {
-                    file2.delete();
-                }
-            }
-            file.delete();
+        for(String str : terms){
+            deleteRecursively(new File(str));
         }
-        testDir.delete();
+        deleteRecursively(new File("test"));
+    }
+    private void deleteRecursively(File file){
+        if (file.isDirectory()) {
+            File[] files2 = file.listFiles();
+            for (File file2 : files2) {
+                deleteRecursively(file2);
+            }
+        }
+        file.delete();
     }
 
     public void testCount() throws Exception {
@@ -62,15 +66,36 @@ public class CallbackTest extends TestCase {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH");
 
     public void testIncrementCreatesDirectory() throws Exception {
-        callback.increment("test", format.parse("2011-03-02-12"));
-        assertTrue(new File("test" + File.separator + "2011-03-02-12").exists());
-        assertTrue(new File("test" + File.separator + "2011-03-02-12" + File.separator + "count.txt").exists());
+        callback.increment("#todoke", format.parse("2011-03-02-12"));
+        assertTrue(new File("#todoke" + File.separator + "2011-03-02-12").exists());
+        assertTrue(new File("#todoke" + File.separator + "2011-03-02-12" + File.separator + "count.txt").exists());
     }
 
     public void testIncrementIncrementsCount() throws Exception {
-        callback.increment("test", format.parse("2011-03-02-13"));
-        callback.increment("test", format.parse("2011-03-02-13"));
-        int count = Callback.getCount(new File("test" + File.separator + "2011-03-02-13" + File.separator + "count.txt"));
+        callback.increment("#hokkairo", format.parse("2011-03-02-13"));
+        callback.increment("#hokkairo", format.parse("2011-03-02-13"));
+        int count = Callback.getCount(new File("#hokkairo" + File.separator + "2011-03-02-13" + File.separator + "count.txt"));
         assertEquals(2, count);
+
+
+        count = Callback.getCount(new File("#todoke" + File.separator + "2011-03-02-13" + File.separator + "count.txt"));
+        assertEquals(0, count);
+        callback.increment("#todoke", format.parse("2011-03-02-13"));
+
+        count = Callback.getCount(new File("#hokkairo" + File.separator + "2011-03-02-13" + File.separator + "count.txt"));
+        assertEquals(2, count);
+
+        count = Callback.getCount(new File("#todoke" + File.separator + "2011-03-02-13" + File.separator + "count.txt"));
+        assertEquals(1, count);
+
+        callback.increment("#todoke #hokkairo", format.parse("2011-03-02-13"));
+
+        count = Callback.getCount(new File("#hokkairo" + File.separator + "2011-03-02-13" + File.separator + "count.txt"));
+        assertEquals(3, count);
+
+        count = Callback.getCount(new File("#todoke" + File.separator + "2011-03-02-13" + File.separator + "count.txt"));
+        assertEquals(2, count);
+
     }
+
 }

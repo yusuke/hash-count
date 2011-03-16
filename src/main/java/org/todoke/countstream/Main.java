@@ -45,7 +45,7 @@ public class Main {
             }
             path.append(term.replaceAll("#", ""));
         }
-        Callback callback = new Callback(new File(path.toString()));
+        Callback callback = new Callback(terms);
         Counter counter = new Counter(callback);
 
         stream.addListener(counter);
